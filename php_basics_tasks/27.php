@@ -1,4 +1,4 @@
 <?php
-define('DAYS_COUNT',7);
-const MONTH_COUNT = 12;
+echo "In command line I wrote: \"php 04.php\", <br> ";
+echo "and get: \"Мне 27\"";
 

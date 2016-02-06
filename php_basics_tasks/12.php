@@ -1,6 +1,6 @@
 <?php
 
-$day = 4;
+$day = 14;
 
 switch ($day){
     case 1 <= $day && $day <= 5:
@@ -8,5 +8,7 @@ switch ($day){
     break;
     case 6 <= $day && $day <= 7:
         echo "Это выходной день";
-
+    break;
+    default :
+        echo "Неизвестный день";
 }
