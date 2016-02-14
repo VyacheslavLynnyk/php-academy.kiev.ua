@@ -5,14 +5,23 @@
     <title>Photo gallery</title>
     <style>
         #content {
-            width: 100%;
+            width: 85%;
+            margin: auto;
             text-align: center;
         }
         #content img {
+            display: inline-block;
+            position: relative;
             margin: 10px;
-            width: 60%;
+            /*float: left;*/
+            width: 20%;
             border: 5px solid white;
             box-shadow: 2px 2px 4px black;
+            transition: width 500ms;
+
+        }
+        #content img:hover {
+            width: 30% ;
 
         }
     </style>
@@ -41,7 +50,11 @@ function uploadFile($targetPath, $files ){
     $imageFileType = pathinfo($targetFile,PATHINFO_EXTENSION);
     // Check if image file is a actual image or fake image
 
-    $check = getimagesize($files["fileToUpload"]["tmp_name"]);
+    if (!empty($files["fileToUpload"]["tmp_name"])) {
+        $check = getimagesize($files["fileToUpload"]["tmp_name"]);
+    } else {
+        return "Load a file please...";
+    }
     if($check !== false) {
         //echo "File is an image - " . $check["mime"] . ".";
         if (move_uploaded_file($files["fileToUpload"]["tmp_name"], $targetFile)){
