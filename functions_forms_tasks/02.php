@@ -17,7 +17,7 @@
             for ($i = 0; $i < $count; $i++) {
                 $biggest = '';
                 foreach ($words as $num => $word) {
-                    if (strlen($biggest) < strlen($word)) {
+                    if (mb_strlen($biggest, 'UTF-8') < mb_strlen($word, 'UTF-8')) {
                         $biggest = $word;
                         $biggestNum = $num;
                     }
@@ -29,25 +29,17 @@
         }  else {
             return $biggestArr = ['Слов меньше чем нужно выдать'] ;
         }
-
-
-
-        if ( count($arrB) > count($arrA) ) {
-            return array_intersect($arrB, $arrA);
-        }
-        return array_intersect($arrA, $arrB);
     }
 
 ?>
 
 <body>
-<h1> Выводим общие слова </h1>
-<h3>Пишите в обоих колонках слова через пробел.</h3>
+<h1> Выводим слова </h1>
+<h3>Найдем 3 самых длинных слова.</h3>
 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="GET">
-    <textarea name="text" id="" cols="30" rows="10">Петя Леня космос Виктор Федор Сумкин Илья Вика вася</textarea>
-
+    <textarea name="text" id="" cols="30" rows="10">Петя Леня космос Виктор Федор Сумкин Илья Viktoriya Вика john вася</textarea><br>
     </label>
-    <input type="submit" value="Do it">
+    <input type="submit" value="Вывести">
     <p>
         <?php
 
