@@ -55,6 +55,8 @@ function getCommonWords($first, $second, $case){
             }
         }
 
+
+
         ?>
     </p>
 </form>
