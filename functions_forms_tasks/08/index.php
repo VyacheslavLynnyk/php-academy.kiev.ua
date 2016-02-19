@@ -27,7 +27,7 @@ function getMessages($path){
 
 function checkBadWords($text)
 {
-    $pattern = '/хуй|пизда|джигурда|бля|хуи|ебл|пидор|пидар|хуе|ебищ|уеба/';
+    $pattern = '/хуй|пизда|джигурда|бля|хуи|ебл|пидор|пидар|хуе|ебищ|уеба|fuck|suck|hui|pizda|dzhigurda/';
     if (preg_match_all($pattern, mb_strtolower($text, 'UTF-8'))) {
         return false;
     }

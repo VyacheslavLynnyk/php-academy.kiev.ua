@@ -22,14 +22,13 @@
         }
         #content img:hover {
             width: 30% ;
-
         }
     </style>
 </head>
 
 <?php
 
-$targetPath = "gallery/";
+$targetPath = "gallery";
 
 
 function getAllFiles($path){
@@ -40,30 +39,38 @@ function getAllFiles($path){
         }
         $files[] = $data;
     }
-    return (sizeof($files)) ? $files : false;
+    return (isset($files)) ? $files : false;
 }
 
 
 
-function uploadFile($targetPath, $files ){
-    $targetFile = $targetPath . basename($files["fileToUpload"]["name"]);
-    $imageFileType = pathinfo($targetFile,PATHINFO_EXTENSION);
-    // Check if image file is a actual image or fake image
-
-    if (!empty($files["fileToUpload"]["tmp_name"])) {
-        $check = getimagesize($files["fileToUpload"]["tmp_name"]);
-    } else {
-        return "Load a file please...";
+function uploadFile($targetPath, $files )
+{
+    if (!is_dir($targetPath)) {
+        mkdir($targetPath);
     }
-    if($check !== false) {
-        //echo "File is an image - " . $check["mime"] . ".";
-        if (move_uploaded_file($files["fileToUpload"]["tmp_name"], $targetFile)){
-            $message = 'uploaded seccesfully';
+
+    foreach ($files["image"]["tmp_name"] as $file => $filePath){
+        $targetFile = $targetPath . '/' . basename($files["image"]["name"][$file]);
+        $imageFileType = pathinfo($targetFile, PATHINFO_EXTENSION);
+
+        $type = strpos('jpg|jpeg|bmp|gif|png', strtolower($imageFileType));
+        // Check if image file is a actual image or fake image
+        if ($type && !empty($filePath)) {
+            $check = getimagesize($filePath);
         } else {
-            $message = 'file(s) not uploaded';
+            return "Load a file please...";
         }
-    } else {
-        $message = "File is not an image.";
+        if ($check !== false) {
+            //echo "File is an image - " . $check["mime"] . ".";
+            if (move_uploaded_file($filePath, $targetFile)) {
+                $message = 'uploaded seccesfully';
+            } else {
+                $message = 'file(s) not uploaded';
+            }
+        } else {
+            $message = "File is not an image.";
+        }
     }
     return $message;
 }
@@ -82,16 +89,17 @@ if (sizeof($_POST)) {
     <fieldset>
         <legend>Upload your image</legend>
         <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST" enctype="multipart/form-data" >
-            <input type="file" name="fileToUpload">
+            <input type="file" name="image[]" multiple>
             <input type="submit"  value="Upload images" name="submit">
             <p><?php echo $message ?? '' ?></p>
         </form>
     </fieldset>
     <div id="content">
-        <?php $allFiles = getAllFiles($targetPath) ?>
-        <?php foreach ($allFiles as $num => $file): ?>
-            <img src="<?=$targetPath.$file ?>" alt="изображение-<?=$num + 1?>">
-        <?php endforeach ?>
+        <?php if ($allFiles = getAllFiles($targetPath)): ?>
+            <?php foreach ($allFiles as $num => $file): ?>
+                <img src="<?=$targetPath.'/'.$file ?>" alt="изображение-<?=$num + 1?>">
+            <?php endforeach ?>
+        <?php endif; ?>
 
     </div>
 </body>
